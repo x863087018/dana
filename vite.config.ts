@@ -74,18 +74,18 @@ export default defineConfig({
 
   plugins: [
     vue(),
-    optimizePersist(),
-    packageConfig(),
-    vitePluginImport({
-      onlyBuild: false,
-      babelImportPluginOptions: [
-        {
-          libraryName: 'ant-design-vue',
-          libraryDirectory: 'es',
-          style: true
-        }
-      ]
-    }),
+    // optimizePersist(),
+    // packageConfig(),
+    // vitePluginImport({
+    //   onlyBuild: false,
+    //   babelImportPluginOptions: [
+    //     {
+    //       libraryName: 'ant-design-vue',
+    //       libraryDirectory: 'es',
+    //       style: true
+    //     }
+    //   ]
+    // }),
     // https://github.com/GitOfZGT/vite-plugin-theme-preprocessor
     // themePreprocessorPlugin({
     //   less: {
