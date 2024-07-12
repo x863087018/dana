@@ -1,5 +1,5 @@
 {
-  "name": "gaia-console",
+  "name": "dana",
   "private": true,
   "version": "2023.11.22.1-test",
   "scripts": {
@@ -65,7 +65,7 @@
     "request": "2.88.2",
     "request-promise-native": "1.0.9",
     "sass": "1.43.4",
-    "typescript": "4.4.3",
+    "typescript": "4.4.4",
     "vite": "2.6.12",
     "vite-plugin-import": "0.4.0",
     "vite-plugin-optimize-persist": "0.1.2",

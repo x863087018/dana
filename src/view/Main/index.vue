@@ -1,5 +1,7 @@
 <template>
-    <div class="main"></div>
+    <div class="main">
+        <a-button>测试</a-button>
+    </div>
 </template>
 <script lang="ts" setup>
 import { onMounted } from "vue";
@@ -11,7 +13,6 @@ onMounted(()=>{
 </script>
 <style scoped lang="scss">
     .main{
-        background: red;
         width: 100vw;
         height: 100vh;
     }

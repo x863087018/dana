@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import './style.css'
+import './assets/reset.scss'
 import App from './App.vue'
 import store from './store'
 import router from './router'
@@ -8,4 +8,4 @@ const app = createApp(App)
 app
   .use(router)
   .use(store)
-  .mount('#app')
+  .mount('#dana')
