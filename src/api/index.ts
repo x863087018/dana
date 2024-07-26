@@ -1,0 +1,124 @@
+import Axios from './axios'
+import axios, { AxiosResponse } from 'axios'
+import { Interceptors, CreateAxiosOptions } from '@/types/axios'
+import { message } from 'ant-design-vue'
+// import { fixOauthUrl } from '@/utils/util'
+
+enum ResCode {
+    'SUCCESS' = '0',
+    'NOT_LOGIN' = '4010000',
+    'NOT_REGISTED' = '4020000',
+    'NOT_AUTH' = '4030000'
+}
+
+const pendingRequest = new Map()
+const generateRequestKey = (config: CreateAxiosOptions) => {
+    const { url } = config
+    return url
+}
+const addPendingRequest = (config: CreateAxiosOptions) => {
+    if (!config.customOptions?.limitRepeat) return
+
+    const key = generateRequestKey(config)
+    if (!pendingRequest.has(key)) {
+        config.cancelToken = new axios.CancelToken(cancel => {
+            pendingRequest.set(key, cancel)
+        })
+    }
+}
+const removePendingRequest = (config: CreateAxiosOptions) => {
+    const key = generateRequestKey(config)
+    if (pendingRequest.has(key)) {
+        pendingRequest.get(key)(`cancel due to repeated request ${key}`)
+        pendingRequest.delete(key)
+    }
+}
+
+const interceptors: Interceptors = {
+    reqInterceptors: (config: CreateAxiosOptions) => {
+        removePendingRequest(config)
+        addPendingRequest(config)
+
+        return config
+    },
+
+    reqInterceptorsCatch: (err: any) => {
+        pendingRequest.clear()
+        return Promise.reject(err)
+    },
+
+    resInterceptors: (res: AxiosResponse<any>) => {
+        //   const { data, config } = res
+        //   const { code, msg } = data
+
+        //   removePendingRequest(config)
+
+        //   if (code === ResCode.NOT_LOGIN &&
+        //     (navigator.userAgent.indexOf('YunZhuLi') > -1 || config.url !== '/base/login/check')
+        //   ) {
+        //     if (navigator.userAgent.indexOf('YunZhuLi') > -1) {
+        //       window.location.replace(fixOauthUrl(data.data.url, window.location.search, window.location.pathname))
+        //       return res
+        //     } else {
+        //       window.location.replace('/login')
+        //       return res
+        //     }
+        //   }
+
+        //   if (code === ResCode.NOT_AUTH && ['/base/qrcode/get-status', '/base/qrcode/check'].includes(config.url!)) {
+        //     window.location.replace('/unauthorized')
+        //     return res
+        //   }
+
+        //   if (code === ResCode.NOT_REGISTED && ['/base/qrcode/get-status', '/base/qrcode/check'].includes(config.url!)) {
+        //     window.location.replace('/not-registed')
+        //     return res
+        //   }
+
+        //   const sucMsgMode = (config as CreateAxiosOptions).customOptions?.sucMsgMode
+        //   if (code === ResCode.SUCCESS && sucMsgMode) {
+        //     const mode = sucMsgMode?.mode || 'message'
+        //     const msg = sucMsgMode.useResponseMsg
+        //       ? data.data.msg
+        //       : sucMsgMode.msg
+        //     if (mode === 'message' && msg) message.success(msg)
+        //   }
+
+        //   const errMsgMode = (config as CreateAxiosOptions).customOptions?.errMsgMode || 'message'
+        //   if (code !== ResCode.SUCCESS && msg) {
+        //     if (errMsgMode === 'message') message.error(msg)
+        //   }
+
+        return res
+    },
+
+    resInterceptorsCatch: (err: any) => {
+        // 重复请求引发的错误
+        if (err.message.indexOf('cancel due to repeated request') > -1) return Promise.reject(err)
+
+        if (err.response) {
+            const { config, status, statusText, data }: AxiosResponse = err.response
+            const errMsgMode = (config as CreateAxiosOptions).customOptions?.errMsgMode || 'message'
+
+            if (status) {
+                if (status !== 502) {
+                    if (errMsgMode === 'message') message.error(`${data?.msg || statusText || '接口异常'}，状态码${status}`)
+                }
+            }
+        } else {
+            message.error(
+                err.message.includes('timeout')
+                    ? '请求超时'
+                    : '请求异常'
+            )
+        }
+
+        pendingRequest.clear()
+        return Promise.reject(err)
+    }
+}
+export default new Axios({
+    baseURL: '/api',
+    timeout: 1000 * 30,
+    interceptors
+})

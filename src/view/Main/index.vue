@@ -4,11 +4,12 @@
     </div>
 </template>
 <script lang="ts" setup>
+import { test } from "@/api/login";
 import { onMounted } from "vue";
 
-onMounted(()=>{
+onMounted(async ()=>{
     console.log(1123);
-    
+    const res = await test({test:'123'})
 })
 </script>
 <style scoped lang="scss">
