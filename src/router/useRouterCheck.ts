@@ -3,13 +3,22 @@
 
 import { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 export const useRouterCheck = async (
-    to: RouteLocationNormalized,
-    from: RouteLocationNormalized,
-    next: NavigationGuardNext
-  ) => {
-     console.log(1123);
-     
-
+  to: RouteLocationNormalized,
+  from: RouteLocationNormalized,
+  next: NavigationGuardNext
+) => {
+  const login = false
+  if (to.path !== '/login') {
+    if (!login) {
+      next('/login')
+    } else {
       next()
-    
+    }
+  } else {
+    if (login) {
+      next('/')
+    } else {
+      next()
+    }
   }
+}

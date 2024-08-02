@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <a-button>测试</a-button>
+        <a-button @click="tests">测试</a-button>
     </div>
 </template>
 <script lang="ts" setup>
@@ -9,8 +9,10 @@ import { onMounted } from "vue";
 
 onMounted(async ()=>{
     console.log(1123);
-    const res = await test({test:'123'})
 })
+const tests = async ()=>{
+    const res = await test({test:'123'})
+}
 </script>
 <style scoped lang="scss">
     .main{

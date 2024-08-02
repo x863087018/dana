@@ -121,18 +121,18 @@ export default defineConfig({
     }
   },
 
-  // server: {
-  //   // host: '10.30.22.228',
-  //   port: 6003,
-  //   open: true,
-  //   proxy: {
-  //     '/api': {
-  //       // target: 'https://gaia-console-dev.longqueyun.com',
-  //       target: 'http://localhost:6001',
-  //       changeOrigin: true
-  //     }
-  //   }
-  // },
+  server: {
+    // host: '10.30.22.228',
+    port: 3000,
+    open: true,
+    proxy: {
+      '/api': {
+        // target: 'https://gaia-console-dev.longqueyun.com',
+        target: 'http://localhost:1123',
+        changeOrigin: true
+      }
+    }
+  },
 
   // build: {
   //   commonjsOptions: <RollupCommonJSOptions>{
