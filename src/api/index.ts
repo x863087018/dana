@@ -38,7 +38,12 @@ const interceptors: Interceptors = {
     reqInterceptors: (config: CreateAxiosOptions) => {
         removePendingRequest(config)
         addPendingRequest(config)
-
+        // 假设您的 token 存储在一个变量 token 中
+        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjExMjMiLCJ1c2VybmFtZSI6IjExMjMiLCJpYXQiOjE3MjMxOTU1NDgsImV4cCI6MTcyMzE5OTE0OH0.ZhtW5J6tu2J__gcz7eyN3W-66G36LpcEVb9LEkvZkkc';
+        config.headers = {
+            ...config.headers,
+            Authorization: `Bearer ${token}`
+        };
         return config
     },
 

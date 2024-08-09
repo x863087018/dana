@@ -7,7 +7,7 @@ export const useRouterCheck = async (
   from: RouteLocationNormalized,
   next: NavigationGuardNext
 ) => {
-  const login = false
+  const login = true
   if (to.path !== '/login') {
     if (!login) {
       next('/login')

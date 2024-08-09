@@ -14,6 +14,10 @@ const routes: RouteRecordRaw[] = [
         path: '/login',
         component: () => import('../view/Login/index.vue')
     },
+    {
+        path: '/test',
+        component: () => import('../view/Test/index.vue')
+    },
 ]
 const router = createRouter({
     history: createWebHistory(),
