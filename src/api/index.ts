@@ -53,46 +53,6 @@ const interceptors: Interceptors = {
     },
 
     resInterceptors: (res: AxiosResponse<any>) => {
-        //   const { data, config } = res
-        //   const { code, msg } = data
-
-        //   removePendingRequest(config)
-
-        //   if (code === ResCode.NOT_LOGIN &&
-        //     (navigator.userAgent.indexOf('YunZhuLi') > -1 || config.url !== '/base/login/check')
-        //   ) {
-        //     if (navigator.userAgent.indexOf('YunZhuLi') > -1) {
-        //       window.location.replace(fixOauthUrl(data.data.url, window.location.search, window.location.pathname))
-        //       return res
-        //     } else {
-        //       window.location.replace('/login')
-        //       return res
-        //     }
-        //   }
-
-        //   if (code === ResCode.NOT_AUTH && ['/base/qrcode/get-status', '/base/qrcode/check'].includes(config.url!)) {
-        //     window.location.replace('/unauthorized')
-        //     return res
-        //   }
-
-        //   if (code === ResCode.NOT_REGISTED && ['/base/qrcode/get-status', '/base/qrcode/check'].includes(config.url!)) {
-        //     window.location.replace('/not-registed')
-        //     return res
-        //   }
-
-        //   const sucMsgMode = (config as CreateAxiosOptions).customOptions?.sucMsgMode
-        //   if (code === ResCode.SUCCESS && sucMsgMode) {
-        //     const mode = sucMsgMode?.mode || 'message'
-        //     const msg = sucMsgMode.useResponseMsg
-        //       ? data.data.msg
-        //       : sucMsgMode.msg
-        //     if (mode === 'message' && msg) message.success(msg)
-        //   }
-
-        //   const errMsgMode = (config as CreateAxiosOptions).customOptions?.errMsgMode || 'message'
-        //   if (code !== ResCode.SUCCESS && msg) {
-        //     if (errMsgMode === 'message') message.error(msg)
-        //   }
 
         return res
     },
