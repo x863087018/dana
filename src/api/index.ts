@@ -6,8 +6,8 @@ import { message } from 'ant-design-vue'
 
 enum ResCode {
     'SUCCESS' = '0',
-    'NOT_LOGIN' = '4010000',
-    'NOT_REGISTED' = '4020000',
+    'NOT_LOGIN' = '401',
+    'NOT_SUCCESS' = '500',
     'NOT_AUTH' = '4030000'
 }
 
@@ -39,7 +39,7 @@ const interceptors: Interceptors = {
         removePendingRequest(config)
         addPendingRequest(config)
         // 假设您的 token 存储在一个变量 token 中
-        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjExMjMiLCJ1c2VybmFtZSI6IjExMjMiLCJpYXQiOjE3MjMxOTU1NDgsImV4cCI6MTcyMzE5OTE0OH0.ZhtW5J6tu2J__gcz7eyN3W-66G36LpcEVb9LEkvZkkc';
+        const token = sessionStorage.getItem('spaceToken')
         config.headers = {
             ...config.headers,
             Authorization: `Bearer ${token}`
@@ -53,7 +53,18 @@ const interceptors: Interceptors = {
     },
 
     resInterceptors: (res: AxiosResponse<any>) => {
+        const { data, config } = res
+        const { code, msg } = data
 
+        removePendingRequest(config)
+
+        if (code === ResCode.NOT_LOGIN
+        ) {
+            window.location.replace('/login')
+
+        } else if (code === ResCode.NOT_SUCCESS) {
+            message.error(`${data.data}`)
+        }
         return res
     },
 
