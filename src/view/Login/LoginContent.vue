@@ -1,7 +1,7 @@
 <template>
 
-  <a-form :model="formState" name="basic" :label-col="{ span: 6 }" :wrapper-col="{ span: 16 }" autocomplete="off"
-    @finish="onFinish" @finishFailed="onFinishFailed" style="padding-top: 20px;">
+  <a-form ref="formRef" :model="formState" name="basic" :label-col="{ span: 6 }" :wrapper-col="{ span: 16 }"
+    autocomplete="off" @finish="onFinish" @finishFailed="onFinishFailed" style="padding-top: 20px;">
     <a-form-item label="用户名" name="username" :rules="[{ required: true, message: '请输入用户名' }]">
       <a-input v-model:value="formState.username" />
     </a-form-item>
@@ -26,15 +26,18 @@
     </a-form-item>
 
     <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-      <a-button type="primary" html-type="submit">Submit</a-button>
+      <a-button type="primary" @click="submit" :loading="submitLoading">登录</a-button>
     </a-form-item>
   </a-form>
 </template>
 <script lang="ts" setup>
-import { captchaGetImg } from '@/api/login';
+import { captchaGetImg, login } from '@/api/login';
+import { loginReq } from '@/api/login/type';
+import { message } from 'ant-design-vue';
 import { reactive, ref } from 'vue';
 import { onMounted } from "vue";
-
+import { useRouter } from 'vue-router';
+const formRef = ref()
 onMounted(() => {
   getImg()
 })
@@ -47,7 +50,36 @@ const getImg = async () => {
     imgId.value = data.id
   }
 }
-const imgId = ref<string>()
+const router = useRouter()
+const submitLoading = ref<boolean>(false)
+const submit = () => {
+  formRef.value.validate().then(async () => {
+    submitLoading.value = true
+    const query: loginReq = {
+      uid: formState.username,
+      password: formState.password,
+      answer: formState.verificationCode,
+      id: imgId.value
+    }
+    const { code, data } = await login(query)
+    submitLoading.value = false
+    if (data === '验证码错误' || data === '账号或密码错误') {
+      formState.verificationCode = ''
+      getImg()
+    }
+    if (code === '0') {
+      sessionStorage.setItem('isLogin', '1')
+      sessionStorage.setItem('spaceToken', data?.token)
+      message.success('登录成功')
+      router.push('/test')
+    }
+  }).catch((e: any) => {
+    console.log(e)
+  }).finally(() => {
+
+  })
+}
+const imgId = ref<string>('')
 const imageBase64 = ref<string>()
 interface FormState {
   username: string;

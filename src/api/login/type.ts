@@ -6,3 +6,10 @@ export interface captchaGetImgRes {
     id: string
 }
 
+export interface loginReq {
+    uid: string
+    password: string
+    id: string
+    answer: string
+
+}
