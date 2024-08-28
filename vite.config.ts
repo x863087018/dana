@@ -127,7 +127,6 @@ export default defineConfig({
     open: true,
     proxy: {
       '/api': {
-        // target: 'https://gaia-console-dev.longqueyun.com',
         target: 'http://localhost:1123',
         changeOrigin: true
       }

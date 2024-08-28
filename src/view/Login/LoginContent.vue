@@ -71,7 +71,7 @@ const submit = () => {
       sessionStorage.setItem('isLogin', '1')
       sessionStorage.setItem('spaceToken', data?.token)
       message.success('登录成功')
-      router.push('/test')
+      router.push('/')
     }
   }).catch((e: any) => {
     console.log(e)
