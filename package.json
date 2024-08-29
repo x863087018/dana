@@ -32,6 +32,7 @@
     "lodash": "4.17.21",
     "mitt": "3.0.0",
     "normalize.css": "8.0.1",
+    "ol": "^10.1.0",
     "pinia": "2.0.4",
     "prettier": "^2.8.4",
     "qiankun": "2.5.1",
