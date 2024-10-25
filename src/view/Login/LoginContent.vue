@@ -40,6 +40,8 @@ import { useRouter } from 'vue-router';
 const formRef = ref()
 onMounted(() => {
   getImg()
+  formState.username = 'admin'
+  formState.password = '1123'
 })
 const getImg = async () => {
   const { code, data } = await captchaGetImg()
@@ -70,6 +72,7 @@ const submit = () => {
     if (code === '0') {
       sessionStorage.setItem('isLogin', '1')
       sessionStorage.setItem('spaceToken', data?.token)
+      sessionStorage.setItem('user', JSON.stringify(data?.user))
       message.success('登录成功')
       router.push('/')
     }

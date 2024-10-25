@@ -38,7 +38,45 @@ const routes: RouteRecordRaw[] = [
                     title: "Openlayers"
                 },
                 component: () => import('@/view/Map/index.vue'),
-            }
+            },
+            {
+                path: '/person',
+                name: 'person',
+                meta: {
+                    title: "个人信息"
+                },
+                component: () => import('@/view/Person/change.vue'),
+                redirect: '/operation/requestRecord',
+                children: [
+                    {
+                        path: '/person/change',
+                        name: 'change',
+                        meta: {
+                            title: "资料修改"
+                        },
+                        component: () => import('@/view/Person/change.vue'),
+                    }
+                ]
+            },
+            {
+                path: '/operation',
+                name: 'operation',
+                meta: {
+                    title: "运维"
+                },
+                component: () => import('@/view/Operation/requestRecord.vue'),
+                redirect: '/operation/requestRecord',
+                children: [
+                    {
+                        path: '/operation/requestRecord',
+                        name: 'requestRecord',
+                        meta: {
+                            title: "请求记录"
+                        },
+                        component: () => import('@/view/Operation/requestRecord.vue'),
+                    }
+                ]
+            },
         ]
     },
     {

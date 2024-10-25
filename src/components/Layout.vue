@@ -80,6 +80,7 @@ watch(
                 const base = newRoutes.find(it => it.path === '/')?.children
                 breadcrumbList.value = []
                 const res: any = base?.find(it => it.name === paths[1])
+                console.log(res)
                 breadcrumbList.value.push(res?.meta?.title)
                 if (paths.length > 2) {
                     const res1 = res?.children.find((it: any) => it.name === paths[2])

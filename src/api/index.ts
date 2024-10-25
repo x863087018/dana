@@ -60,6 +60,7 @@ const interceptors: Interceptors = {
 
         if (code === ResCode.NOT_LOGIN
         ) {
+            sessionStorage.removeItem('user')
             sessionStorage.removeItem('spaceToken')
             sessionStorage.removeItem('isLogin')
             window.location.replace('/login')

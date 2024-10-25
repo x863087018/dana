@@ -1,5 +1,5 @@
 import http from '@/api/index'
-import { captchaGetImgRes, testReq, loginReq } from './type'
+import { captchaGetImgRes, testReq, loginReq, loginRes } from './type'
 
 enum Api {
     TEST = '/captcha/getImg',
@@ -15,6 +15,6 @@ export const captchaGetImg = () =>
         url: Api.CAPTCHA_GETIMG
     })
 export const login = (data: loginReq) =>
-    http.post<any>({
+    http.post<loginRes>({
         url: Api.LOGIN, data
     })
