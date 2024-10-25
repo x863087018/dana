@@ -7,10 +7,18 @@
                 <a-button style="width:100%" @click="loginOut()">退出登录</a-button>
             </template>
             <template #title>
+                <div style="display: flex;justify-content: center;width:100%;margin-bottom: 10px;">
+                    <a-avatar :size="{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }" :src="userStore.info.avatar"
+                        :style="{ objectFit: 'cover' }">
+                        <template #icon>
+                            <AntDesignOutlined />
+                        </template>
+                    </a-avatar>
+                </div>
                 <div>欢迎您！尊敬的用户</div>
             </template>
             <div style="display: flex;align-items: center;">
-                <a-avatar size="small" :style="{ objectFit: 'cover' }">
+                <a-avatar size="small" :src="userStore.info.avatar" :style="{ objectFit: 'cover' }">
                     <template #icon>
                         <AntDesignOutlined />
                     </template>
@@ -29,7 +37,6 @@ import { onMounted } from "vue";
 import { ref } from 'vue';
 const userStore = useUserStore()
 onMounted(() => {
-
 })
 const loginOut = () => {
     message.success('退出成功')

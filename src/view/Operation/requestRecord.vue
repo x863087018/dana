@@ -8,6 +8,6 @@ import { getList } from "@/api/api-record";
 import { onMounted } from "vue";
 
 onMounted(async () => {
-    const { code, data } = await getList()
+    const { code, data } = await getList({ pageSize: 10, pageNumber: 1 })
 })
 </script>

@@ -24,19 +24,24 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { UploadFile } from 'ant-design-vue/es/upload/interface';
-
+import { uploadAvatar } from '@/api/upload'
+import { message } from 'ant-design-vue';
+import { useUserStore } from '@/store/modules/user';
+const userStore = useUserStore()
 const form = ref({
     name: '',
     email: '',
 });
-
+onMounted(() => {
+    avatarUrl.value = userStore.info.avatar
+})
 const avatarFile = ref<UploadFile | null>(null);
 const avatarUrl = ref<string | null>(null);
 
 // 处理头像上传
-const beforeUpload = (file: UploadFile) => {
+const beforeUpload = (file: any) => {
     const isImage = file.type.startsWith('image/');
     if (!isImage) {
         // 显示错误信息
@@ -51,10 +56,15 @@ const beforeUpload = (file: UploadFile) => {
 };
 
 // 提交表单
-const handleSubmit = (e: Event) => {
+const handleSubmit = async (e: Event) => {
     e.preventDefault();
     console.log('提交的个人信息:', form.value);
     console.log('上传的头像文件:', avatarFile.value);
+    const data = await uploadAvatar(avatarFile.value)
+    console.log(data)
+    if (data?.data) {
+        message.success(data?.data)
+    }
     // 在这里可以处理表单提交逻辑，比如发送请求到后端
 };
 </script>
