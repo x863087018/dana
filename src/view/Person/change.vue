@@ -1,11 +1,11 @@
 <template>
     <a-card title="个人信息" style="max-width: 400px; margin: auto;">
         <a-form :form="form" @submit="handleSubmit">
-            <a-form-item label="姓名" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
-                <a-input v-model="form.name" placeholder="请输入姓名" />
+            <a-form-item label="账号" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                <a-input disabled v-model:value="form.uid" placeholder="请输入账号" />
             </a-form-item>
-            <a-form-item label="邮箱" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
-                <a-input v-model="form.email" placeholder="请输入邮箱" />
+            <a-form-item label="姓名" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
+                <a-input v-model:value="form.name" placeholder="请输入姓名" />
             </a-form-item>
             <a-form-item label="头像" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
                 <a-avatar :size="64" :src="avatarUrl" alt="avatar" style="cursor: pointer; margin-bottom: 8px;" />
@@ -24,18 +24,25 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { UploadFile } from 'ant-design-vue/es/upload/interface';
 import { uploadAvatar } from '@/api/upload'
 import { message } from 'ant-design-vue';
 import { useUserStore } from '@/store/modules/user';
 const userStore = useUserStore()
-const form = ref({
+const form = ref<{
+    uid: string,
+    name: string,
+}>({
     name: '',
-    email: '',
+    uid: '',
 });
+const userInfo = reactive(JSON.parse(sessionStorage.getItem('user') || '{}'))
 onMounted(() => {
-    avatarUrl.value = userStore.info.avatar
+    console.log(userInfo,'个人信息')
+    avatarUrl.value = userInfo.avatar
+    form.value.uid = userInfo.uid
+    form.value.name = userInfo.name
 })
 const avatarFile = ref<UploadFile | null>(null);
 const avatarUrl = ref<string | null>(null);
@@ -60,10 +67,12 @@ const handleSubmit = async (e: Event) => {
     e.preventDefault();
     console.log('提交的个人信息:', form.value);
     console.log('上传的头像文件:', avatarFile.value);
-    const data = await uploadAvatar(avatarFile.value)
+    const data = await uploadAvatar(avatarFile.value,form.value.name)
     console.log(data)
-    if (data?.data) {
-        message.success(data?.data)
+    if (data?.code === '0') {
+        message.success('更新成功')
+        sessionStorage.setItem('user', JSON.stringify(data?.data))
+        userStore.setUserInfo(data?.data)
     }
     // 在这里可以处理表单提交逻辑，比如发送请求到后端
 };

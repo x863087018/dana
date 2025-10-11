@@ -12,9 +12,9 @@
 import { ref } from 'vue';
 
 const images = ref([
-    { src: 'http://127.0.0.1:1123/dana-files/upload_1729842537304.0.24368257073511312.jpg', alt: 'Slide 1' },
-    { src: 'http://127.0.0.1:1123/dana-files/upload_1729844398840.0.74536175671209.png', alt: 'Slide 2' },
-    { src: 'http://127.0.0.1:1123/dana-files/upload_1729844398840.0.74536175671209.png', alt: 'Slide 3' },
+    { src: 'http://127.0.0.1:1123/dana-files/1.gif', alt: 'Slide 1' },
+    { src: 'http://127.0.0.1:1123/dana-files/2.jpg', alt: 'Slide 2' },
+    { src: 'http://127.0.0.1:1123/dana-files/3.jpg', alt: 'Slide 3' },
 ]);
 </script>
 

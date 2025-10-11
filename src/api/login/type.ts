@@ -11,7 +11,7 @@ export interface User {
     uid: string,
     updatedAt: number,
     createdAt: number,
-    ataver?: any
+    avatar?: any
 }
 export interface loginReq {
     uid: string
