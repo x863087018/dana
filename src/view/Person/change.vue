@@ -8,7 +8,7 @@
                 <a-input v-model:value="form.name" placeholder="请输入姓名" />
             </a-form-item>
             <a-form-item label="头像" :label-col="{ span: 6 }" :wrapper-col="{ span: 14 }">
-                <a-avatar :size="64" :src="avatarUrl" alt="avatar" style="cursor: pointer; margin-bottom: 8px;" />
+                <a-avatar :size="64" :src="url + avatarUrl" alt="avatar" style="cursor: pointer; margin-bottom: 8px;" />
 
             </a-form-item>
             <a-form-item :wrapper-col="{ span: 14, offset: 6 }">
@@ -38,6 +38,7 @@ const form = ref<{
     uid: '',
 });
 const userInfo = reactive(JSON.parse(sessionStorage.getItem('user') || '{}'))
+const url = import.meta.env.VITE_API_BASE_URL
 onMounted(() => {
     console.log(userInfo,'个人信息')
     avatarUrl.value = userInfo.avatar

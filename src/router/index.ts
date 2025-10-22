@@ -77,6 +77,25 @@ const routes: RouteRecordRaw[] = [
                     }
                 ]
             },
+            {
+                path: '/websocket',
+                name: 'websocket',
+                meta: {
+                    title: "WebSocket"
+                },
+                component: () => import('@/view/WebSocket/index.vue'),
+                redirect: '/websocket/chat',
+                children: [
+                    {
+                        path: '/websocket/chat',
+                        name: 'chat',
+                        meta: {
+                            title: "聊天室"
+                        },
+                        component: () => import('@/view/WebSocket/ChatRoom.vue'),
+                    }
+                ]
+            },
         ]
     },
     {
