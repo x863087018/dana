@@ -1,8 +1,7 @@
 module.exports = {
     apps: [{
       name: 'dana-console',
-      script: 'npx', // 使用npx运行serve
-      args: 'serve -s dist -l 3000', // 服务dist目录，端口3000
+      script: 'server.js', // 使用 Node.js 运行 server.js
       cwd: '/root/dana', // 工作目录
       instances: 1,
       autorestart: true,
