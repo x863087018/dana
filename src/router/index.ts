@@ -64,7 +64,7 @@ const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "运维"
                 },
-                component: () => import('@/view/Operation/requestRecord.vue'),
+                component: () => import('@/view/Operation/index.vue'),
                 redirect: '/operation/requestRecord',
                 children: [
                     {
@@ -74,6 +74,15 @@ const routes: RouteRecordRaw[] = [
                             title: "请求记录"
                         },
                         component: () => import('@/view/Operation/requestRecord.vue'),
+                    }
+                    ,
+                    {
+                        path: '/operation/user',
+                        name: 'user',
+                        meta: {
+                            title: "用户管理"
+                        },
+                        component: () => import('@/view/Operation/userList.vue'),
                     }
                 ]
             },

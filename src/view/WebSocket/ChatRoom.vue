@@ -5,7 +5,7 @@
         <h2>WebSocket 聊天室</h2>
         <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
           <span style="color: #666;">当前用户名:</span>
-          <a-tag color="blue">{{ currentUsername }}</a-tag>
+          <a-tag color="blue">{{ userStore.info.name }}</a-tag>
         </div>
       </div>
       <div class="status-info">
@@ -102,13 +102,19 @@
 <script lang="ts" setup>
 import { ref, onUnmounted, nextTick, computed, watch } from 'vue'
 import { message } from 'ant-design-vue'
-
+import { useUserStore } from "@/store/modules/user";
+// import { onMounted } from "vue";
+// onMounted(() => {
+//   userStore.info.name = userStore.info.name
+//   console.log(userStore.info.name, '1123')
+// })
+const userStore = useUserStore()
 // 状态管理
 const isConnected = ref(false)
 const connecting = ref(false)
 const connectionStatus = ref('已断开')
 const inputMessage = ref('')
-const currentUsername = ref('游客' + Math.random().toString(36).substr(2, 4))
+// const userStore.info.name = ref('游客' + Math.random().toString(36).substr(2, 4))
 const messages = ref<Array<{
   id: string
   username: string
@@ -174,7 +180,7 @@ const connect = async () => {
       if (ws.value) {
         ws.value.send(JSON.stringify({
           type: 'join',
-          username: currentUsername.value
+          username: userStore.info.name
         }))
       }
       
@@ -208,18 +214,19 @@ const connect = async () => {
     }
     
     ws.value.onmessage = (event) => {
-      console.log('收到原始消息:', event.data)
+      console.log('收到原始消息:', event)
       
       // 过滤掉纯文本的 message 和 heartbeat
-      if (event.data === 'message' || event.data === 'heartbeat') {
-        console.log('忽略纯文本消息:', event.data)
-        return
-      }
+      // if (event.data === 'message' || event.data === 'heartbeat') {
+      //   console.log('忽略纯文本消息:', event.data)
+      //   return
+      // }
       
       try {
         const data = JSON.parse(event.data)
-        console.log('解析后的JSON:', data)
-        handleMessage(data)
+        const message = JSON.parse(data.message)
+        console.log('解析后的JSON:', message)
+        handleMessage(message)
       } catch (error) {
         // 不是 JSON 格式的消息，记录但不显示
         console.log('收到非JSON消息（已忽略）:', event.data)
@@ -271,7 +278,7 @@ const handleMessage = (data: any) => {
   switch (data.type) {
     case 'message':
       // 如果是自己发的消息且已经在本地显示了，就不再重复添加
-      if (data.username !== currentUsername.value) {
+      if (data.username !== userStore.info.name) {
         messages.value.push({
           id: data.id || Date.now().toString(),
           username: data.username || '未知用户',
@@ -311,7 +318,7 @@ const handleMessage = (data: any) => {
     case 'user_join':
     case 'join':
       // 检查是否是自己加入的消息，不显示自己的加入消息
-      if (data.username && data.username !== currentUsername.value) {
+      if (data.username && data.username !== userStore.info.name) {
         messages.value.push({
           id: Date.now().toString(),
           username: '系统',
@@ -372,7 +379,7 @@ const sendMessage = () => {
     // 立即在本地显示消息
     messages.value.push({
       id: Date.now().toString(),
-      username: currentUsername.value,
+      username: userStore.info.name,
       content: messageContent,
       timestamp: Date.now(),
       type: 'message',
@@ -383,7 +390,7 @@ const sendMessage = () => {
     ws.value.send(JSON.stringify({
       type: 'message',
       content: messageContent,
-      username: currentUsername.value
+      username: userStore.info.name
     }))
     
     console.log('发送消息:', messageContent)
@@ -405,7 +412,7 @@ const clearMessages = () => {
 // 获取消息样式类
 const getMessageClass = (msg: any) => {
   if (msg.type === 'system') return 'system-message'
-  if (msg.isSelf || msg.username === currentUsername.value) return 'own-message'
+  if (msg.isSelf || msg.username === userStore.info.name) return 'own-message'
   return 'normal-message'
 }
 
@@ -494,7 +501,7 @@ watch(() => messages.value.length, () => {
   flex: 1;
   padding: 16px;
   overflow-y: auto;
-  max-height: calc(100vh - 300px);
+  max-height: calc(100vh - 400px);
 }
 
 .message-item {
