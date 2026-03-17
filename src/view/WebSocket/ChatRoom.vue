@@ -180,7 +180,8 @@ const connect = async () => {
       if (ws.value) {
         ws.value.send(JSON.stringify({
           type: 'join',
-          username: userStore.info.name
+          username: userStore.info.name,
+          uid: userStore.info.uid
         }))
       }
       
@@ -243,10 +244,10 @@ const connect = async () => {
 const startHeartbeat = () => {
   heartbeatTimer.value = setInterval(() => {
     if (ws.value && ws.value.readyState === WebSocket.OPEN) {
-      ws.value.send(JSON.stringify({ type: 'heartbeat', timestamp: Date.now() }))
+      ws.value.send(JSON.stringify({ type: 'heartbeat', timestamp: Date.now(), uid:userStore.info.uid,username: userStore.info.name, }))
       console.log('发送心跳')
     }
-  }, 30000) // 30秒
+  }, 10000) // 30秒
 }
 
 // 停止心跳
@@ -369,6 +370,10 @@ const disconnect = () => {
     ws.value = null
   }
   message.info('已断开连接')
+  // 停止心跳
+  stopHeartbeat()
+  onlineUsers.value = []
+  
 }
 
 // 发送消息
@@ -390,7 +395,8 @@ const sendMessage = () => {
     ws.value.send(JSON.stringify({
       type: 'message',
       content: messageContent,
-      username: userStore.info.name
+      username: userStore.info.name,
+      uid: userStore.info.uid
     }))
     
     console.log('发送消息:', messageContent)
