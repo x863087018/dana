@@ -84,6 +84,15 @@ const routes: RouteRecordRaw[] = [
                         },
                         component: () => import('@/view/Operation/userList.vue'),
                     }
+                    ,
+                    {
+                        path: '/operation/wxUser',
+                        name: 'wxUser',
+                        meta: {
+                            title: "小程序用户"
+                        },
+                        component: () => import('@/view/Operation/wxUserList.vue'),
+                    }
                 ]
             },
             {
@@ -102,7 +111,15 @@ const routes: RouteRecordRaw[] = [
                             title: "聊天室"
                         },
                         component: () => import('@/view/WebSocket/ChatRoom.vue'),
-                    }
+                    },
+                    {
+                        path: '/websocket/yancard',
+                        name: 'yancard',
+                        meta: {
+                            title: "我要燕牌"
+                        },
+                        component: () => import('@/view/WebSocket/YanCard.vue'),
+                    },
                 ]
             },
         ]
