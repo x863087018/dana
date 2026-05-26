@@ -122,6 +122,25 @@ const routes: RouteRecordRaw[] = [
                     },
                 ]
             },
+            {
+                path: '/tools',
+                name: 'tools',
+                meta: {
+                    title: "工具类"
+                },
+                component: () => import('@/view/Tools/index.vue'),
+                redirect: '/tools/json',
+                children: [
+                    {
+                        path: '/tools/json',
+                        name: 'json',
+                        meta: {
+                            title: "JSON解析"
+                        },
+                        component: () => import('@/view/Tools/JsonParse.vue'),
+                    },
+                ]
+            },
         ]
     },
     {
