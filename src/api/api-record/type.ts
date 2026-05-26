@@ -1,6 +1,11 @@
 export interface getListReq {
     pageSize: number
     pageNumber: number
+    uid?: string
+    api?: string
+    ip?: string
+    startTime?: number
+    endTime?: number
 }
 export interface ApiRecord {
     _id: string
@@ -16,3 +21,5 @@ export interface getListRes {
     list: ApiRecord[]
     total: number
 }
+
+export type getIpListRes = string[]
